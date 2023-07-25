@@ -1,8 +1,12 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from .models import Student
 from .forms import StudentForm
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -10,10 +14,17 @@ def index(request):
         'students': Student.objects.all()
     })
 
+@login_required(login_url='/account/login/')
+def students(request):
+    return render(request, 'students/students.html', {
+        'students': Student.objects.all()
+    })
+
 def viewStudent(request, id):
     student = Student.objects.get(pk=id)
     return HttpResponseRedirect(reverse('index'))
 
+@login_required(login_url='/account/login/')
 def add(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
@@ -44,6 +55,7 @@ def add(request):
         'form': StudentForm()
     })
 
+@login_required(login_url='/account/login/')
 def edit(request, id):
     if request.method == 'POST':
         student = Student.objects.get(pk=id)

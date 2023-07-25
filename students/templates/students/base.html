@@ -27,7 +27,7 @@
           <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav me-auto">
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">
+                <a class="nav-link" href="{% url 'students' %}">
                   <i class="fa-solid fa-list"></i>
                   All Students
                 </a>
@@ -39,6 +39,16 @@
                 </a>
               </li>
             </ul>
+            <div class="d-flex" style="gap: 4px">
+              {% if user.is_authenticated %}
+              <!-- Botão de logout -->
+              <a class="btn btn-secondary my-2 my-sm-0" href="{% url 'account_logout' %}">Sign Out</a>
+              {% else %}
+              <!-- Botões de login e registro -->
+              <a class="btn btn-secondary my-2 my-sm-0" href="{% url 'account_login' %}">Sign In</a>
+              <a class="btn btn-secondary my-2 my-sm-0" href="{% url 'account_signup' %}">Sign Up</a>
+              {% endif %}
+            </div>
           </div>
         </div>
       </nav>
