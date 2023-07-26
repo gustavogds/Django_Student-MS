@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Student
 from .forms import StudentForm
@@ -17,7 +17,7 @@ def index(request):
 @login_required(login_url='/account/login/')
 def students(request):
     return render(request, 'students/students.html', {
-        'students': Student.objects.all()
+        'students': Student.objects.filter(user=request.user)
     })
 
 def viewStudent(request, id):
@@ -35,13 +35,17 @@ def add(request):
             new_email = form.cleaned_data['email']
             new_field_of_study = form.cleaned_data['field_of_study']
             new_gpa = form.cleaned_data['gpa']
+
+            current_user = request.user
+
             new_student = Student(
                 student_number=new_student_number,
                 first_name=new_first_name,
                 last_name=new_last_name,
                 email=new_email,
                 field_of_study=new_field_of_study,
-                gpa=new_gpa
+                gpa=new_gpa,
+                user=current_user,
             )
 
             new_student.save()
@@ -52,7 +56,7 @@ def add(request):
     else:
         form = StudentForm()
     return render(request, 'students/add.html', {
-        'form': StudentForm()
+        'form': form
     })
 
 @login_required(login_url='/account/login/')
