@@ -1,0 +1,31 @@
+{% extends "students/base.html" %} 
+{% load widget_tweaks %} 
+{% load account %} 
+{% load i18n %}
+
+{% block body %} 
+
+<h3 class="text-center m-4">Email Confirmation</h3>
+
+{% if confirmation %} 
+{% user_display confirmation.email_address.user as user_display %}
+
+<div class="row justify-content-center">
+  <div class="col-6">
+    <div class="card text-white bg-dark mb-3">
+      <div class="card-body">
+        <p>Please confirm that <a href="mailto:{{ confirmation.email_address.email }}">{{ confirmation.email_address.email }}</a> is an e-mail address for user {{ user_display }}.</p>
+        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+          {% csrf_token %}
+          <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %} 
+
+{% endblock %}

@@ -13,7 +13,14 @@
           <form method="POST" action="{% url 'account_login' %}">
             {% csrf_token %}
             <div class="form-group">{% render_field form.login class="form-control" %}</div>
+            {% for error in form.login.errors %}
+            <span class="text-danger">{{ error }}</span>
+            {% endfor %}
             <div class="form-group">{% render_field form.password class="form-control mt-2" %}</div>
+            {% for error in form.password.errors %}
+            <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            <!-- ! -->
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
             {% endif %}

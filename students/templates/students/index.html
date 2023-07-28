@@ -1,3 +1,24 @@
 {% extends "students/base.html" %} {% block body %}
-<h3 class="m-4 text-center">HOME</h3>
+<h3 class="m-4 text-center">Options</h3>
+
+<div class="row justify-content-center">
+  <div class="col-6">
+    <div class="card text-white bg-dark mb-3">
+      <div class="card-body">
+        <div class="row justify-content-center mx-4">
+          {% if user.is_authenticated %}
+          <!-- Botão de logout -->
+          <a class="btn btn-secondary my-2" href="{% url 'account_logout' %}">Sign Out</a>
+          <a class="btn btn-secondary my-2" href="{% url 'students' %}">All Students</a>
+          <a class="btn btn-secondary my-2" href="{% url 'add' %}">Add Student</a>
+          {% else %}
+          <!-- Botões de login e registro -->
+          <a class="btn btn-secondary my-2" href="{% url 'account_login' %}">Sign In</a>
+          <a class="btn btn-secondary my-2" href="{% url 'account_signup' %}">Sign Up</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
